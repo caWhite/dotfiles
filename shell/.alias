@@ -1,0 +1,17 @@
+alias ..='cd ..'
+alias grep='grep --color=auto'
+alias k='kubectl'
+alias ks='kustomize'
+alias kns='kubens'
+alias ktx='kubectx'
+alias l='ls -ACF'
+alias la='ls -A'
+alias ll='ls -alF'
+alias ls='ls --color=auto'
+alias tf='terraform'
+alias n='nvim'
+
+alias "c=xclip" # copy to X clipboard (register *)
+alias "cs=xclip -selection clipboard" # copy to system wide clipboard (register +)
+alias "v=xclip -o" # output copied content (paste)
+alias "vs=xclip -o -selection clipboard" # paste from system wide clipboard (equivalent to `v -selection clipboard`)

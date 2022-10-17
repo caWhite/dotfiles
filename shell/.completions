@@ -1,0 +1,17 @@
+#!/bin/bash
+
+[ -d ~/.asdf ] && source ~/.asdf/completions/asdf.bash
+
+if command -v kubectl > /dev/null 2>&1; then
+  source <(kubectl completion bash)
+fi
+
+if command -v aws > /dev/null 2>&1 ; then
+  VERSION="$(asdf current awscli | awk '{print $2}')"
+  complete -C "$(which aws_completer)" aws
+fi
+
+if [ -d /usr/share/doc/fzf ]; then
+ source /usr/share/doc/fzf/examples/key-bindings.bash
+ source /usr/share/doc/fzf/examples/completion.bash
+fi

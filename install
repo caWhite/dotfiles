@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -eu
+
+ASDF_BRANCH=v0.10.0
+BOOTSTRAP_PKGS=( curl git stow )
+OS_TYPE=$(grep -oP '(?<=^ID=).+' /etc/os-release)
+
+# if [ $EUID -ne 0 ]; then
+#   echo "This script should be run as root"
+#   exit 1[]
+# fi
+
+
+case "$OS_TYPE" in
+
+  ubuntu)
+    sudo apt install "${BOOTSTRAP_PKGS[@]}"
+
+  ;;
+
+
+
+  *)
+    echo "not implemented yet"
+  ;;
+
+
+esac
+
+if [ ! -d ~/.asdf ]; then
+  git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch "$ASDF_BRANCH"
+fi
