@@ -8,7 +8,6 @@ golang system
 yq v4.13.0
 terraform 1.2.6
 packer 1.7.4
-kubetail 1.6.13
 act 0.2.26
 awscli 2.7.14
 direnv 2.32.1

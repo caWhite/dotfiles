@@ -26,7 +26,7 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-SOURCE_FILES=( ~/.alias ~/.functions ~/.env ~/.completions ~/.init )
+SOURCE_FILES=( ~/.alias ~/.env ~/.completions ~/.init )
 for file in "${SOURCE_FILES[@]}"; do
     source "$file"
 done
