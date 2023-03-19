@@ -30,3 +30,4 @@ SOURCE_FILES=( ~/.alias ~/.env ~/.completions ~/.init )
 for file in "${SOURCE_FILES[@]}"; do
     source "$file"
 done
+source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/bashrc"
