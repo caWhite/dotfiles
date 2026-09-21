@@ -1,31 +1,124 @@
+# Tracked, public. No email here on purpose -- identity is per-machine and
+# lives in ~/.config/git/identity (untracked). See examples/git-identity.example.
+
 [user]
 	name = Corey White
-	email = corey.white.a@gmail.com
+	# useConfigOnly makes git refuse to invent an email from $USER@$HOSTNAME.
+	# On a machine with no identity file, commits fail loudly instead of
+	# being authored by something wrong and silently pushed.
+	useConfigOnly = true
 
+[include]
+	path = ~/.config/git/identity
+
+[core]
+	editor = nvim
+	excludesfile = ~/.gitignore_global
+	# Cache untracked-file scans; noticeable on large repos, no daemon.
+	untrackedCache = true
+	# Bigger win still, but it starts a background fsmonitor daemon per repo:
+	# fsmonitor = true
+
+[init]
+	defaultBranch = main
+
+[push]
+	# No more `--set-upstream` on the first push of a branch.
+	autoSetupRemote = true
+	followTags = true
+
+[pull]
+	# Refuse to silently create a merge commit; rebase or merge deliberately.
+	# Swap for `rebase = true` if you'd rather it always rebase.
+	ff = only
+
+[fetch]
+	prune = true
+	pruneTags = true
+
+[rebase]
+	autoStash = true
+	autoSquash = true
+	# Rewrites branches that point into the range being rebased -- the thing
+	# that makes stacked branches survive a rebase of their base.
+	updateRefs = true
+
+[merge]
+	# zdiff3 shows the common ancestor in conflict markers, not just both sides.
+	conflictStyle = zdiff3
+
+[rerere]
+	# Remember how you resolved a conflict and replay it next time.
+	enabled = true
+	autoUpdate = true
+
+[diff]
+	algorithm = histogram
+	colorMoved = zebra
+	mnemonicPrefix = true
+	renames = copies
+
+[branch]
+	sort = -committerdate
+
+[tag]
+	sort = -version:refname
+
+[log]
+	date = iso
+
+[column]
+	ui = auto
+
+[commit]
+	verbose = true
+
+[help]
+	autocorrect = prompt
+
+[submodule]
+	recurse = true
+
+# Forces SSH for every github.com https URL. Handy for private terraform
+# modules and `go get`; remove it if you need anonymous https clones to work.
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
 
 [alias]
-    # one-line log
-    l = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+	# one-line log
+	l = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
 
-    a = add
-    ap = add -p
-    c = commit --verbose
-    ca = commit -a --verbose
-    cm = commit -m
-    cam = commit -a -m
-    m = commit --amend --verbose
-    
-    d = diff
-    ds = diff --stat
-    dc = diff --cached
+	a = add
+	ap = add -p
+	c = commit --verbose
+	ca = commit -a --verbose
+	cm = commit -m
+	cam = commit -a -m
+	m = commit --amend --verbose
 
-    s = status
-    co = checkout
-    cob = checkout -b
-    # list branches sorted by last modified
-    b = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
+	d = diff
+	ds = diff --stat
+	dc = diff --cached
 
-    # list aliases
-    la = "!git config -l | grep alias | cut -c 7-"
-[core]
-	editor = vim
+	s = status
+	sc = switch -c
+	co = checkout
+	cob = checkout -b
+
+	# branches by last modified. `branch.sort` above now does this for plain
+	# `git branch` too, so this is mostly for the explicit timestamp column.
+	b = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
+
+	# list aliases
+	la = "!git config -l | grep alias | cut -c 7-"
+
+	# which identity is in effect here? useful when the includeIf rules grow
+	who = "!git config user.name && git config user.email"
+
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path =
+
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
