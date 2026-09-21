@@ -1,5 +1,6 @@
+[gcloud]
+disabled=true
 [kubernetes]
 disabled=false
-
-[gcloud]
-format='on [$symbol$project (\($region\))]($style) '
+[python]
+disabled=false
