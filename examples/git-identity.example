@@ -1,0 +1,29 @@
+# Copy to ~/.config/git/identity on a new machine and edit.
+#
+#   mkdir -p ~/.config/git
+#   cp ~/.dotfiles/examples/git-identity.example ~/.config/git/identity
+#   $EDITOR ~/.config/git/identity
+#
+# ~/.gitconfig sets `user.useConfigOnly = true`, so until this file exists
+# git will refuse to commit rather than guess an author from $USER@$HOSTNAME.
+#
+# Check what's in effect anywhere with:  git who
+
+[user]
+	email = you@example.com
+
+# Optional: different identity for some trees. The trailing slash means
+# "and everything beneath it". Later includes win, so keep these after [user].
+#
+# [includeIf "gitdir:~/repos/some-org/"]
+# 	path = ~/.config/git/identity-work
+#
+# Match on the remote instead of the path (git 2.36+):
+#
+# [includeIf "hasconfig:remote.*.url:git@github.com:some-org/**"]
+# 	path = ~/.config/git/identity-work
+#
+# ...where ~/.config/git/identity-work is just:
+#
+# [user]
+# 	email = you@work.example.com
